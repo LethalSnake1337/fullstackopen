@@ -15,11 +15,12 @@ const Feedback = ({ children }) => {
 
 const StaticsticLine = ({ text, value }) => {
   return (
-    <div>
-      <p>
-        {text} {value}
-      </p>
-    </div>
+    <tbody>
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
+    </tbody>
   );
 };
 
@@ -32,12 +33,14 @@ const Statistic = ({ feedbackExists, good, neutral, bad }) => {
       {feedbackExists ? (
         <div>
           <h1>statistic</h1>
-          <StaticsticLine text="good" value={good} />
-          <StaticsticLine text="neutral" value={neutral} />
-          <StaticsticLine text="bad" value={bad} />
-          <StaticsticLine text="all" value={all} />
-          <StaticsticLine text="average" value={average} />
-          <StaticsticLine text="positive" value={positive + "%"} />
+          <table>
+            <StaticsticLine text="good" value={good} />
+            <StaticsticLine text="neutral" value={neutral} />
+            <StaticsticLine text="bad" value={bad} />
+            <StaticsticLine text="all" value={all} />
+            <StaticsticLine text="average" value={average} />
+            <StaticsticLine text="positive" value={positive + "%"} />
+          </table>
         </div>
       ) : (
         <div>
