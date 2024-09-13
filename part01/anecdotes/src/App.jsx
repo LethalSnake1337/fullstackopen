@@ -23,18 +23,24 @@ const App = () => {
   const [points, setPoints] = useState(new Array(8).fill(0));
 
   const voteAnecdotes = () => {
-    console.log(points);
-    const pointsCopy = [...points];
-    pointsCopy[selected] += 1;
-    setPoints(pointsCopy);
+    setPoints(
+      points.map((point, index) => (index === selected ? point + 1 : point))
+    );
   };
+
+  const maxNumber = Math.max(...points);
+  const indexOfMax = points.indexOf(maxNumber);
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <button onClick={rotateAnecdotes}>next anecdote</button>
       <button onClick={voteAnecdotes}>vote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[indexOfMax]}</p>
+      <p>has {maxNumber} votes</p>
     </div>
   );
 };
