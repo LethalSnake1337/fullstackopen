@@ -13,22 +13,31 @@ const Feedback = ({ children }) => {
   );
 };
 
+const StaticsticLine = ({ text, value }) => {
+  return (
+    <div>
+      <p>
+        {text} {value}
+      </p>
+    </div>
+  );
+};
+
 const Statistic = ({ feedbackExists, good, neutral, bad }) => {
   const all = good + neutral + bad;
   const average = (good * 1 + neutral * 0 + bad * -1) / all;
   const positive = (good / all) * 100;
-  console.log(feedbackExists);
   return (
     <>
       {feedbackExists ? (
         <div>
           <h1>statistic</h1>
-          <p>good {good}</p>
-          <p>neutral {neutral}</p>
-          <p>bad {bad}</p>
-          <p>all {all}</p>
-          <p>average {average}</p>
-          <p>positive {positive}%</p>
+          <StaticsticLine text="good" value={good} />
+          <StaticsticLine text="neutral" value={neutral} />
+          <StaticsticLine text="bad" value={bad} />
+          <StaticsticLine text="all" value={all} />
+          <StaticsticLine text="average" value={average} />
+          <StaticsticLine text="positive" value={positive + "%"} />
         </div>
       ) : (
         <div>
