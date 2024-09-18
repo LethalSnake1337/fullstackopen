@@ -2,7 +2,6 @@ import { useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import axios from "axios";
 import { useEffect } from "react";
 import Communication from "./services/Communication";
 
@@ -18,7 +17,13 @@ const App = () => {
       setPersons(persons);
     });
   };
-
+  const handleDelete = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      Communication.deletePerson(id).then((returnedPersons) => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
   useEffect(hook, []);
 
   const addPhoneNumber = (event) => {
@@ -79,7 +84,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons filteredPerson={filteredPerson} />
+      <Persons filteredPerson={filteredPerson} handleDelete={handleDelete} />
     </div>
   );
 };
