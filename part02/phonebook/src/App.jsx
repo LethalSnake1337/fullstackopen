@@ -5,6 +5,7 @@ import Persons from "./components/Persons";
 import { useEffect } from "react";
 import Communication from "./services/Communication";
 import Notification from "./components/Notification";
+import NotificationError from "./components/NotificationError";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,7 +13,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
-  const [success, setSuccess] = useState("ulala");
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   const hook = () => {
     Communication.getAll().then((persons) => {
@@ -22,7 +24,9 @@ const App = () => {
   const handleDelete = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
       Communication.deletePerson(id).then((returnedPersons) => {
-        setPersons(persons.filter((person) => person.id !== id));
+        setPersons(
+          persons.filter((person) => person.id !== returnedPersons.id)
+        );
       });
     }
   };
@@ -44,16 +48,28 @@ const App = () => {
       Communication.create(newPersonObject).then((returnedPersons) => {
         setPersons(persons.concat(returnedPersons));
         setSuccess(`Added ${returnedPersons.name}`);
+        setTimeout(() => {
+          setSuccess(null);
+        }, 5000);
       });
     } else {
-      Communication.update(personExists[0].id, newPersonObject).then(
-        (returnedPerson) =>
+      Communication.update(personExists[0].id, newPersonObject)
+        .then((returnedPerson) =>
           setPersons(
             persons.map((person) =>
               person.id === returnedPerson.id ? returnedPerson : person
             )
           )
-      );
+        )
+        .catch((err) => {
+          setError(
+            `Information of "${newPersonObject.name}" has already been removed from server`
+          );
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
+          setPersons(persons.filter((n) => n.id !== personExists[0].id));
+        });
     }
     setNewName("");
     setNewNumber("");
@@ -79,6 +95,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={success} />
+      <NotificationError message={error} />
       <Filter
         newFilter={newFilter}
         handleOnFilterChange={handleOnFilterChange}
