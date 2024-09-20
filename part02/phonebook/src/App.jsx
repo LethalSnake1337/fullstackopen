@@ -35,7 +35,7 @@ const App = () => {
     };
 
     const personExists = persons.filter(
-      (person) => JSON.stringify(person) === JSON.stringify(newPersonObject)
+      (person) => person.name === newPersonObject.name
     );
 
     if (personExists.length === 0) {
@@ -43,7 +43,14 @@ const App = () => {
         setPersons(persons.concat(returnedPersons))
       );
     } else {
-      alert(`${newName} is already added to phonebook`);
+      Communication.update(personExists[0].id, newPersonObject).then(
+        (returnedPerson) =>
+          setPersons(
+            persons.map((person) =>
+              person.id === returnedPerson.id ? returnedPerson : person
+            )
+          )
+      );
     }
     setNewName("");
     setNewNumber("");
