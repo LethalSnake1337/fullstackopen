@@ -4,6 +4,7 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import { useEffect } from "react";
 import Communication from "./services/Communication";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [success, setSuccess] = useState("ulala");
 
   const hook = () => {
     Communication.getAll().then((persons) => {
@@ -39,9 +41,10 @@ const App = () => {
     );
 
     if (personExists.length === 0) {
-      Communication.create(newPersonObject).then((returnedPersons) =>
-        setPersons(persons.concat(returnedPersons))
-      );
+      Communication.create(newPersonObject).then((returnedPersons) => {
+        setPersons(persons.concat(returnedPersons));
+        setSuccess(`Added ${returnedPersons.name}`);
+      });
     } else {
       Communication.update(personExists[0].id, newPersonObject).then(
         (returnedPerson) =>
@@ -75,7 +78,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={success} />
       <Filter
         newFilter={newFilter}
         handleOnFilterChange={handleOnFilterChange}
