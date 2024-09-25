@@ -20,7 +20,10 @@ const App = () => {
         setFilteredCountries={setFilteredCountries}
         filteredCountries={filteredCountries}
       />
-      <Countries filteredCountries={filteredCountries} />
+      <Countries
+        filteredCountries={filteredCountries}
+        setFilteredCountries={setFilteredCountries}
+      />
     </>
   );
 };
